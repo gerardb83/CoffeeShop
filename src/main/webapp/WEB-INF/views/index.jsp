@@ -11,12 +11,7 @@
 </head>
 <body>
 <div class="container">
-	
-	<c:if test="${not empty user.name}">
-	<span class="greeting">
-			Hello ${ user.name }
-		</span>
-		 </c:if>
+
 		<h1>Java Java Coffee Shop</h1>
 		<table class="table">
 			<thead>
@@ -36,8 +31,17 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- <div><img src="pourCoffee.jpg"/></div> -->
-	<a style="float: right" href="/userForm" class="btn btn-secondary">Sign up</a>
-	<a style="float: right" href="/login" class="btn btn-secondary">Login</a>
+	<c:if test="${ empty user }">
+		<a style="float: right" href="/userForm" class="btn btn-secondary">Sign up</a>
+		<a style="float: right" href="/login" class="btn btn-secondary">Login</a>
+		</c:if>
+	
+	<div class="greeting">
+	<c:if test="${not empty user }">
+	
+			Hello ${ user.name }
+			<a href="/logout" class="btn btn-secondary">Logout</a>
+		 </c:if>
+		 	</div>
 </body>
 </html>

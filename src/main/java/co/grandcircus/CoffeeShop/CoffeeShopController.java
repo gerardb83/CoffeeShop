@@ -58,15 +58,15 @@ public class CoffeeShopController {
 		String id = formCredentials.getUserId();
 		String password = formCredentials.getPassword();
 		for (int i = 0; i < listOfUsers.size(); i++) {
-			if(id.equals("admin") && password.equals("sesame")) {  
-				session.setAttribute("user", formCredentials);
-				mv = new ModelAndView("redirect:/adminIndex");
-				break;
-			} else if (id.equals(listOfUsers.get(i).getUserId()) && password.equals(listOfUsers.get(i).getPassword())) {
-				System.out.println("Logging in " + listOfUsers.get(i));
+			 if (id.equals(listOfUsers.get(i).getUserId()) && password.equals(listOfUsers.get(i).getPassword())) {
 				session.setAttribute("user", listOfUsers.get(i));
+				if(id.equals("admin") && password.equals("sesame")) {  
+					mv = new ModelAndView("redirect:/adminIndex");
+					break;
+				} else {
 				mv = new ModelAndView("redirect:/");
 				break;
+				}
 			} else {
 				mv = new ModelAndView("login", "notFound", notFound);
 			}
@@ -111,4 +111,9 @@ public class CoffeeShopController {
 		return new ModelAndView("redirect:/adminIndex");
 	}
 
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpSession session) {
+		session.invalidate();
+		return new ModelAndView("redirect:/");
+	}
 }

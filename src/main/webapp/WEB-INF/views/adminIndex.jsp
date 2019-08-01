@@ -11,27 +11,7 @@
 </head>
 <body>
 <div class="container">
-<c:if test="${not empty user.name}">
-	<span class="greeting">
-			Hello ${ user.name }
-		</span>
-		 </c:if>
 		<h1>Java Java Coffee Shop</h1>
-	<%-- <form class="form-inline" action="/index" autocomplete="off">
-		  <label class="sr-only" for="keyword">Keyword</label>
-		  <input type="text" value="${param.keyword}" class="form-control mb-2 mr-sm-2" id="keyword" name="keyword" placeholder="Keyword">
-		    <label class="sr-only" for="category">Category</label>
-		  <select class="form-control mb-2 mr-sm-2" id="category" name="category">
-		  	<option value="">Category</option>
-		  	<c:forEach items="${ categories }" var="cat">
-		  		<option <c:if test="${ cat eq param.category }">selected</c:if>>${ cat }</option>
-		  	</c:forEach>
-		  </select>
-		  <button type="submit" class="btn btn-primary mb-2 mr-2">Search</button>
-		  <c:if test="${not empty param.keyword or not empty param.category}">
-		  	<a href="/index" class="btn btn-secondary mb-2">Clear</a>
-	  	  </c:if>
-		</form> --%>
 		<table class="table">
 			<thead>
 				<tr>
@@ -52,7 +32,15 @@
 			</c:forEach>
 			</tbody>
 		</table>
+		<a href="/productAdd" class="btn btn-secondary">Add Product</a>
+		<div class="greeting">
+	<c:if test="${not empty user }">
+	
+			<span>Hello ${ user.name }</span>
+			<span><a href="/logout" class="btn btn-secondary">Logout</a></span>
+		 </c:if>
+		 	</div>
 	</div>
-	<a href="/productAdd" class="btn btn-secondary">Add Product</a>
+	
 </body>
 </html>
