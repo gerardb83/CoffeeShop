@@ -6,27 +6,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Thank You!</title>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="/styles.css" rel="stylesheet" /> 
 </head>
 <body>
+
 	<div class="container">
-	<%-- <input type="hidden" name="id" value="${user.id}" /> --%>
+	<c:if test="${not empty user.name}">
+	<span class="greeting">
+			Hello ${ user.name }
+		</span>
+		 </c:if>
 		<h1>Thank You for Registering!</h1>
 		<table class="table">
 			<tr>
 				<th scope="row"></th>
 				<td>Welcome, ${name}</td>
 			</tr>
-<%-- 			<tr>
-				<th scope="row">Password (Tell no one!)</th>
-				<td>${user.password}</td>
-			</tr>
-			<tr>
-				<th scope="row">Name</th>
-				<td>${user.name}</td>
-			</tr> --%>
 		</table>
-		<a class="btn link" href="/index">Back to the Shop!</a>
+		<a class="btn link" href="/">Back to the Shop!</a>
 	</div>
 </body>
 </html>
