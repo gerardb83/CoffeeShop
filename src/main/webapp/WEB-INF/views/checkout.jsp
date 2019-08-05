@@ -16,34 +16,28 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th></th><th>Name</th><th>Description</th><th>Price</th><th>Add to Cart</th>
+					<th>Name</th><th>Price</th><th>Quantity</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="products" items="${products}">
+			
 				<tr>
-					<td>${products.id}</td>
-					<td>${products.name}</td>
-					<td>${products.description}</td>
-					<td>${products.price}</td>
-					<td><a href="/addCart?product=${ products.id }" class="btn btn-light btn-sm">Add</a></td>
+		
+					<td>${count1} Espressos @ $1.25 each: $${total1 }</td>
+					<td>${count2} Americanos @ $1.50 each: $${total2 }</td>
+					
 				</tr>
-				</c:forEach>
+				
 			</tbody>
 		</table>
 	</div>
-	<c:if test="${ empty user }">
-		<a style="float: right" href="/userForm" class="btn btn-secondary">Sign up</a>
-		<a style="float: right" href="/login" class="btn btn-secondary">Login</a>
-		</c:if>
+	
 	
 	<div class="greeting">
 	<c:if test="${not empty user }">
-		
+	
 			Hello, ${ user.name }
-			<a href="/checkout" class="btn btn-secondary">Checkout</a>
 			<a href="/logout" class="btn btn-secondary">Logout</a>
-			Item added to cart: 
 		 </c:if>
 		 	</div>
 </body>

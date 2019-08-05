@@ -1,25 +1,27 @@
 package co.grandcircus.CoffeeShop;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name="Users")
 public class User {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="userId")
 	private int id;
+	@Column(name="userName")
 	private String userId;
 	private String password;
 	private String name;
 	
 	public User() {
 	}
-	
+
 	public User(String userId, String password, String name) {
 		super();
 		this.userId = userId;

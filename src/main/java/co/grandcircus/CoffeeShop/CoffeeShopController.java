@@ -1,7 +1,11 @@
 package co.grandcircus.CoffeeShop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +24,8 @@ public class CoffeeShopController {
 	UserDao userDao;
 	@Autowired
 	ProductDao productDao;
+	@Autowired
+	CartDao cartDao;
 	
 	@RequestMapping("/")
 	public ModelAndView index(@SessionAttribute(name = "user", required = false) User user) {
@@ -39,7 +45,7 @@ public class CoffeeShopController {
 	
 	@PostMapping("/userForm")
 	public ModelAndView addSubmit(User user) {
-		userDao.create(user);
+		userDao.save(user);
 		ModelAndView mv = new ModelAndView("userSubmitted");
 		mv.addObject("name", user.getName());
 		return mv;
@@ -51,12 +57,12 @@ public class CoffeeShopController {
 	}
 	
 	@PostMapping("/login")
-	public ModelAndView loginSubmit(User formCredentials, HttpSession session) {
+	public ModelAndView loginSubmit(User userObject, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		List<User> listOfUsers = new ArrayList<>(userDao.findAll());
 		String notFound = "User ID and/or password not recognized.";
-		String id = formCredentials.getUserId();
-		String password = formCredentials.getPassword();
+		String id = userObject.getUserId();
+		String password = userObject.getPassword();
 		for (int i = 0; i < listOfUsers.size(); i++) {
 			 if (id.equals(listOfUsers.get(i).getUserId()) && password.equals(listOfUsers.get(i).getPassword())) {
 				session.setAttribute("user", listOfUsers.get(i));
@@ -74,40 +80,107 @@ public class CoffeeShopController {
 		return mv;
 	}
 	
+	@RequestMapping("/addCart")
+	public ModelAndView addCart(	
+			@SessionAttribute(name="user") User user, @RequestParam("product") Integer productId) {
+			Product product = productDao.getOne(productId);
+			user = userDao.getOne(user.getId());			
+			Cart cart = new Cart();
+			cart.setProduct(product);
+			cart.setQuantity(1);
+			cart.setUser(user);
+			cartDao.save(cart);		
+		return new ModelAndView("redirect:/");
+	}
+	
+	@RequestMapping("/checkout")
+	public ModelAndView checkout(
+			@SessionAttribute(name="user") User user) {
+		ModelAndView mv = new ModelAndView("checkout");
+		List<Cart> bigCart = cartDao.findAll();
+		List<Cart> userCart = new ArrayList<>();
+		for (Cart each : bigCart) {
+			if (each.getUser().getId() == user.getId()) {
+				userCart.add(each);
+			}
+		}
+		System.out.println("user cart: " + userCart);
+		
+		int count1 = 0;
+		int count2 = 0;
+		for (Cart each : userCart) {
+			if(each.getProduct().getId() == 1) {
+				count1 += 1;
+			} else if (each.getProduct().getId() == 2) {
+				count2 += 1;
+			}
+		}
+		double total1 = count1 * 1.25;
+		double total2 = count1 * 1.25;
+		
+		mv.addObject("count1", count1);
+		mv.addObject("count2", count2);
+		mv.addObject("total1", total1);
+		mv.addObject("total2", total2);
+		
+		System.out.println(count1 + " Espressos @ $1.25 each: $" + (count1 * 1.25));
+		System.out.println(count2 + " Americanos @ $1.50 each: $" + (count2 * 1.25));
+		return mv;
+	}
+			
+	
+	
 	@RequestMapping("/adminIndex")
-	public ModelAndView admin() {
+	public ModelAndView admin(
+			@SessionAttribute(name="user", required=false) User user) {
+		if (user == null || user.getId() != 8) { 
+			return new ModelAndView("redirect:/");
+		} else {
 		List<Product> listOfProducts = productDao.findAll();
 		return new ModelAndView("adminIndex", "products", listOfProducts);
+		}
 	}
 	
 	@RequestMapping("/productAdd")
-	public ModelAndView addProduct() {
-		return new ModelAndView("productForm");
+	public ModelAndView addProduct(		
+			@SessionAttribute(name="user", required=false) User user) {
+		ModelAndView mv = new ModelAndView("productForm");
+		if (user == null || user.getId() != 8) { 
+			return new ModelAndView("redirect:/");
+		} else {
+			return mv;
+		}
 	}
 	
 	@PostMapping("/productAdd")
 	public ModelAndView createProduct(Product product) {
-		productDao.create(product);
+		productDao.save(product);
 		return new ModelAndView("redirect:/adminIndex");
 	}
 	
 	@RequestMapping("/productDelete")
 	public ModelAndView deleteProduct(@RequestParam("id") int id) {
-		productDao.delete(id);
+		productDao.deleteById(id);
 		return new ModelAndView("redirect:/adminIndex");
 	}
 	
 	@RequestMapping("/productEdit")
-	public ModelAndView editForm(@RequestParam("id") int id) {
+	public ModelAndView editForm(	
+			@RequestParam("id") int id,
+			@SessionAttribute(name="user", required=false) User user) {
 		ModelAndView mav = new ModelAndView("editForm");
+		if (user == null || user.getId() != 8) { 
+			return new ModelAndView("redirect:/");
+		} else {
 		mav.addObject("product", productDao.findById(id));
 		mav.addObject("title", "Edit Product");
 		return mav;
+		}
 	}
 	
 	@PostMapping("/productEdit")
 	public ModelAndView submitEdit(Product product) {
-		productDao.update(product);
+		productDao.save(product);
 		return new ModelAndView("redirect:/adminIndex");
 	}
 
