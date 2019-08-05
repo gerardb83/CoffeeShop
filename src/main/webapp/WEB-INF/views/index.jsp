@@ -16,7 +16,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th></th><th>Name</th><th>Description</th><th>Price</th><th>Add to Cart</th>
+					<th></th><th>Name</th><th>Description</th><th>Price</th><c:if test="${not empty user }"><th>Add to Cart</th></c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,7 +26,7 @@
 					<td>${products.name}</td>
 					<td>${products.description}</td>
 					<td>${products.price}</td>
-					<td><a href="/addCart?product=${ products.id }" class="btn btn-light btn-sm">Add</a></td>
+					<c:if test="${not empty user }"><td><a href="/addCart?product=${ products.id }" class="btn btn-light btn-sm">Add</a></td></c:if>
 				</tr>
 				</c:forEach>
 			</tbody>

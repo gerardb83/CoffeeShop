@@ -108,23 +108,33 @@ public class CoffeeShopController {
 		
 		int count1 = 0;
 		int count2 = 0;
+		int count3 = 0;
+		int count4 = 0;
 		for (Cart each : userCart) {
 			if(each.getProduct().getId() == 1) {
 				count1 += 1;
 			} else if (each.getProduct().getId() == 2) {
 				count2 += 1;
-			}
+			} else if (each.getProduct().getId() == 3) {
+				count3 += 1;
+			} else if (each.getProduct().getId() == 4) {
+				count4 += 1;
+		}
 		}
 		double total1 = count1 * 1.25;
-		double total2 = count1 * 1.25;
+		double total2 = count2 * 1.50;
+		double total3 = count3 * 14.0;
+		double total4 = count4 * 1.75;
 		
 		mv.addObject("count1", count1);
 		mv.addObject("count2", count2);
+		mv.addObject("count3", count3);
+		mv.addObject("count4", count4);
 		mv.addObject("total1", total1);
 		mv.addObject("total2", total2);
+		mv.addObject("total3", total3);
+		mv.addObject("total4", total4);
 		
-		System.out.println(count1 + " Espressos @ $1.25 each: $" + (count1 * 1.25));
-		System.out.println(count2 + " Americanos @ $1.50 each: $" + (count2 * 1.25));
 		return mv;
 	}
 			

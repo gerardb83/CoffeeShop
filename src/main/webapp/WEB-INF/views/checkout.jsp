@@ -25,7 +25,8 @@
 		
 					<td>${count1} Espressos @ $1.25 each: $${total1 }</td>
 					<td>${count2} Americanos @ $1.50 each: $${total2 }</td>
-					
+					<td>${count3} Scones @ $14.00 each: $${total3 }</td>
+					<td>${count4} Caffe Lattes @ $1.75 each: $${total4 }</td>
 				</tr>
 				
 			</tbody>
